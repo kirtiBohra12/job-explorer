@@ -37,12 +37,10 @@ section[data-testid="stSidebar"] {
 </style>
 """, unsafe_allow_html=True)
 
-# --- Data Loading ---
 @st.cache
 def load_data():
     return pd.read_csv("data/cleaned_jobs.csv")
 
-# --- Tech Skills Whitelist ---
 TECH_SKILL_WHITELIST = {
     "python", "java", "c", "c++", "c#", "go", "golang", "php",
     "javascript", "typescript", "node", "node.js", "ruby",
@@ -78,10 +76,10 @@ def kpi_card(title, value, icon):
 def compute_freshness(df):
     if "fetched_at" not in df.columns:
         return "Unknown"
-        
-    df["fetched_at"] = pd.to_datetime(df["fetched_at"], format="%d-%m-%Y %H:%M", errors="coerce")
-    
+
+    df["fetched_at"] = pd.to_datetime(df["fetched_at"], dayfirst=True, errors="coerce")
     latest_time = df["fetched_at"].max()
+
     if pd.isna(latest_time):
         return "Unknown"
 
@@ -149,16 +147,14 @@ def main():
 
         for _, row in search_results.iterrows():
             st.markdown(f"### {row['job_title']}")
-            st.write(f"🏢 Company: {row['company']}")
+            st.write(f"🏢 Company: {row['company']}") 
             st.write(f"📍 Location: {row['location']}")
             st.write(f"🎓 Experience: {row['experience_level']}")
             st.markdown(f"🔗 [Apply Here]({row['url']})")
             st.markdown("---")
 
     with right_col:
-
         tech_skill_counter = extract_tech_skills(filtered_data)
-
         freshness = compute_freshness(filtered_data)
 
         kpi_card("Total Jobs", len(filtered_data), "📌")
@@ -166,8 +162,6 @@ def main():
 
         st.markdown("---")
         st.subheader("🔥 Top 10 Tech Skills")
-
-        tech_skill_counter = extract_tech_skills(filtered_data)
 
         if len(tech_skill_counter) == 0:
             st.caption(
@@ -177,12 +171,10 @@ def main():
 
         if len(tech_skill_counter) > 0:
             top_skills = tech_skill_counter.most_common(10)
-
             chart_df = pd.DataFrame(
                 {"Job Count": [count for _, count in top_skills]},
                 index=[skill for skill, _ in top_skills]
             )
-
             st.bar_chart(chart_df)
         else:
             st.info("No skills available in the dataset.")

@@ -2,8 +2,7 @@ import pandas as pd
 import streamlit as st
 import ast
 from collections import Counter
-from datetime import datetime, timezone
-
+from datetime import datetime
 
 st.set_page_config(page_title="Job Explorer Dashboard", layout="wide")
 
@@ -88,7 +87,8 @@ def compute_freshness(df):
     if pd.isna(latest_time):
         return "Unknown"
 
-    hours_ago = int((datetime.now(timezone.utc) - latest_time).total_seconds() / 3600)
+    now_utc = datetime.utcnow()
+    hours_ago = int((now_utc - latest_time).total_seconds() / 3600)
     return f"{hours_ago} hrs ago"
 
 def search_skills(skills_str, query):

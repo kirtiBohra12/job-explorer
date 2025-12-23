@@ -71,11 +71,6 @@ if __name__ == "__main__":
     remoteok_jobs = filter_jobs(raw_remoteok)
     NEW_JOBS.extend(remoteok_jobs)
 
-    # Arbeitnow
-    raw_arbeitnow = fetch_arbeitnow_jobs()
-    arbeitnow_jobs = parse_arbeitnow_jobs(raw_arbeitnow)
-    NEW_JOBS.extend(arbeitnow_jobs)
-
     if os.path.exists("data/raw_jobs.json"):
         with open("data/raw_jobs.json") as f:
             OLD_JOBS = json.load(f)

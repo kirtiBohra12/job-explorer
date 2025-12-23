@@ -54,7 +54,6 @@ TECH_SKILL_WHITELIST = {
     "ai", "ml", "machine learning"
 }
 
-# --- Extract Top Tech Skills ---
 def extract_tech_skills(data):
     all_skills = []
     for skills in data["skills"].dropna():
@@ -68,7 +67,6 @@ def extract_tech_skills(data):
             continue
     return Counter(all_skills)
 
-# --- KPI Card ---
 def kpi_card(title, value, icon):
     st.markdown(f"""
         <div class="kpi-card">
@@ -83,12 +81,10 @@ def compute_freshness(df):
 
     df["fetched_at"] = pd.to_datetime(df["fetched_at"], errors="coerce")
     latest_time = df["fetched_at"].max()
-
     if pd.isna(latest_time):
         return "Unknown"
 
-    now_utc = datetime.utcnow()
-    hours_ago = int((now_utc - latest_time).total_seconds() / 3600)
+    hours_ago = int((datetime.now() - latest_time).total_seconds() / 3600)
     return f"{hours_ago} hrs ago"
 
 def search_skills(skills_str, query):

@@ -32,5 +32,5 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add data/cleaned_jobs.csv
-        git commit -m "Daily data refresh"
-        git push
+        git diff --cached --quiet || git commit -m "Daily data refresh"
+        git push origin main

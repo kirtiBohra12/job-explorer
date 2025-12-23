@@ -1,6 +1,7 @@
 import pandas as pd
 import streamlit as st
 import ast
+import pytz
 from collections import Counter
 from datetime import datetime
 
@@ -76,14 +77,20 @@ def kpi_card(title, value, icon):
 def compute_freshness(df):
     if "fetched_at" not in df.columns:
         return "Unknown"
-
+ 
     df["fetched_at"] = pd.to_datetime(df["fetched_at"], dayfirst=True, errors="coerce")
-    latest_time = df["fetched_at"].max()
 
-    if pd.isna(latest_time):
+    if df["fetched_at"].isna().all():
         return "Unknown"
+        
+    ist = pytz.timezone("Asia/Kolkata")
+    df["fetched_at"] = df["fetched_at"].apply(lambda x: ist.localize(x) if pd.notna(x) else x)
 
-    hours_ago = int((datetime.now() - latest_time).total_seconds() / 3600)
+    now_ist = datetime.now(ist)
+
+    latest_time = df["fetched_at"].max()
+    hours_ago = int((now_ist - latest_time).total_seconds() / 3600)
+
     return f"{hours_ago} hrs ago"
 
 def search_skills(skills_str, query):

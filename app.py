@@ -78,8 +78,9 @@ def kpi_card(title, value, icon):
 def compute_freshness(df):
     if "fetched_at" not in df.columns:
         return "Unknown"
-
-    df["fetched_at"] = pd.to_datetime(df["fetched_at"], errors="coerce")
+        
+    df["fetched_at"] = pd.to_datetime(df["fetched_at"], format="%d-%m-%Y %H:%M", errors="coerce")
+    
     latest_time = df["fetched_at"].max()
     if pd.isna(latest_time):
         return "Unknown"

@@ -5,7 +5,7 @@ import pytz
 from collections import Counter
 from datetime import datetime
 
-st.set_page_config(page_title="Job Explorer Dashboard", layout="wide")
+st.set_page_config(page_title="Real-Time Job Explorer Dashboard", layout="wide")
 
 st.markdown("""
 <style>
@@ -125,7 +125,7 @@ def main():
         filtered_data = filtered_data[filtered_data["location"] == selected_location]
 
     st.title("🤖 Job Explorer Dashboard")
-    st.subheader("Explore jobs, roles & in-demand skills")
+    st.subheader("Explore jobs, roles & in-demand skills in near real-time environment")
 
     left_col, right_col = st.columns([7, 3])
 

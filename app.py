@@ -130,7 +130,7 @@ def main():
     left_col, right_col = st.columns([7, 3])
 
     with left_col:
-        st.header("🔍 Explore Jobs")
+        st.header("Explore Jobs")
         st.write("Search jobs by role, skill, or keyword")
 
         search_input = st.text_input(
@@ -168,7 +168,7 @@ def main():
         kpi_card("Data Freshness", freshness, "🕒")
 
         st.markdown("---")
-        st.subheader("🔥 Top 10 Tech Skills")
+        st.subheader("Top 10 Tech Skills🔥")
 
         if len(tech_skill_counter) == 0:
             st.caption(
